@@ -1,30 +1,30 @@
 #pragma once
+#include "SFML/Graphics.hpp"
 #include "../Global/ServiceLocator.h"
 
 
-namespace Main
+namespace Main 
 {
-	enum class GameState
+	enum class GameState 
 	{
 		BOOT,
+		SPLASH_SCREEN,
 		MAIN_MENU,
 		GAMEPLAY
 	};
 
 
-	class GameService
+	class GameService 
 	{
 	private:
 		Global::ServiceLocator* serviceLocator;
 		sf::RenderWindow* gameWindow;
 
-		static GameState currentState;
-
 		void Initialize();
-		void InitializeVariables();
+		void ShowSplashScreen();
 		void Destroy();
 
-		void ShowMainMenu();
+		static GameState currentState;
 
 	public:
 		GameService();
@@ -33,10 +33,19 @@ namespace Main
 		void Ignite();
 		void Update();
 		void Render();
-
 		bool IsRunning();
 
+		static void SetGameState(GameState newState);
+
 		static GameState GetGameState();
-		static void SetGameState(GameState state);
 	};
 }
+
+
+
+
+
+
+
+
+

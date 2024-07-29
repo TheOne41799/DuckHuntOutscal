@@ -1,18 +1,50 @@
 #include "../../Header/UI/UIService.h"
 #include "../../Header/Main/GameService.h"
-#include "../../Header/UI/MainMenuUIController/MainMenuUIController.h"
+#include "../../Header/UI/UIElement/TextView.h"
 
 
-namespace UI
+namespace UI 
 {
 	using namespace Main;
-	using namespace MainMenu;
+	using namespace Interface;
 
+
+	void UIService::CreateUIControllers()
+	{
+		splashScreenUIController = new SplashScreenUI::SplashScreenUIController();
+		mainMenuUIController = new MainMenu::MainMenuUIController();
+		gameplayUIController = new GameplayUI::GameplayUIController();
+	}
+
+	void UIService::InitializeControllers()
+	{
+		splashScreenUIController->Initialize();
+		mainMenuUIController->Initialize();
+		gameplayUIController->Initialize();
+	}
+
+	void UIService::Destroy()
+	{
+		delete(splashScreenUIController);
+		delete(mainMenuUIController);
+		delete(gameplayUIController);
+	}
+
+	IUIController* UIService::getCurrentUIController()
+	{
+		switch (GameService::GetGameState()) 
+		{
+		case GameState::SPLASH_SCREEN:
+			return splashScreenUIController;
+		case GameState::MAIN_MENU:
+			return mainMenuUIController;
+		case GameState::GAMEPLAY:
+			return gameplayUIController;
+		}
+	}
 
 	UIService::UIService()
 	{
-		mainMenuUIController = nullptr;
-
 		CreateUIControllers();
 	}
 
@@ -21,43 +53,34 @@ namespace UI
 		Destroy();
 	}
 
-	void UIService::CreateUIControllers()
-	{
-		mainMenuUIController = new MainMenuUIController();
-	}
-
 	void UIService::Initialize()
 	{
+		UIElement::TextView::InitializeTextView();
 		InitializeControllers();
-	}
-
-	void UIService::InitializeControllers()
-	{
-		mainMenuUIController->Initialize();
 	}
 
 	void UIService::Update()
 	{
-		switch (GameService::GetGameState())
-		{
-		case GameState::MAIN_MENU:
-			mainMenuUIController->Update();
-			break;
-		}
+		IUIController* uiController = getCurrentUIController();
+		if (uiController) uiController->Update();
 	}
 
 	void UIService::Render()
 	{
-		switch (GameService::GetGameState())
-		{
-		case GameState::MAIN_MENU:
-			mainMenuUIController->Render();
-			break;
-		}
+		IUIController* uiController = getCurrentUIController();
+		if (uiController) uiController->Render();
 	}
 
-	void UIService::Destroy()
+	void UIService::ShowUI()
 	{
-		delete(mainMenuUIController);
+		IUIController* uiController = getCurrentUIController();
+		if (uiController) uiController->Show();
 	}
 }
+
+
+
+
+
+
+

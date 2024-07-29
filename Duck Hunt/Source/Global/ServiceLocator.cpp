@@ -1,123 +1,143 @@
+#include "../../Header/Global/ServiceLocator.h"
 #include "../../Header/Main/GameService.h"
 
 
-namespace Global
+namespace Global 
 {
-	using namespace Graphics;
-	using namespace Time;
-	using namespace Event;
-	using namespace UI;
-	using namespace Gameplay;
-	using namespace Sound;
 	using namespace Main;
+	using namespace Event;
+	using namespace Graphic;
 
 
 	ServiceLocator::ServiceLocator()
 	{
-		graphicService = nullptr;
-		timeService = nullptr;
-		eventService = nullptr;
-		gameplayService = nullptr;
-		uiService = nullptr;
-		soundService = nullptr;
-
 		CreateServices();
 	}
 
 	ServiceLocator::~ServiceLocator()
 	{
-		ClearAllServices();
+		ClearServices();
 	}
 
 	void ServiceLocator::CreateServices()
 	{
-		graphicService = new GraphicService();
-		timeService = new TimeService();
+		graphicServie = new GraphicService();
 		eventService = new EventService();
+		duckService = new DuckService();
 		gameplayService = new GameplayService();
-		uiService = new UIService();
+		playerService = new PlayerService();
+		timeService = new TimeService();
 		soundService = new SoundService();
+		uiService = new UIService();
+	}
+
+	void ServiceLocator::ClearServices()
+	{
+		delete graphicServie;
+		delete eventService;
+		delete gameplayService;
+		delete duckService;
+		delete playerService;
+		delete timeService;
+		delete soundService;
+		delete uiService;
 	}
 
 	ServiceLocator* ServiceLocator::GetInstance()
 	{
-		static ServiceLocator instance;
-		return &instance;
+		static ServiceLocator serviceLocator;
+		return &serviceLocator;
 	}
 
 	void ServiceLocator::Initialize()
 	{
-		graphicService->Initialize();
-		timeService->Initialize();
+		graphicServie->Initialize();
 		eventService->Initialize();
+		duckService->Initialize();
 		gameplayService->Initialize();
-		uiService->Initialize();
+		playerService->Initialize();
+		timeService->Initialize();
 		soundService->Initialize();
+		uiService->Initialize();
 	}
 
 	void ServiceLocator::Update()
 	{
-		graphicService->Update();
-		timeService->Update();
+		graphicServie->Update();
 		eventService->Update();
 
-		if (GameService::GetGameState() == GameState::GAMEPLAY)
+		switch (GameService::GetGameState())
 		{
+		case GameState::GAMEPLAY:
 			gameplayService->Update();
+			duckService->Update();
+			playerService->Update();
+		default:
+			break;
 		}
 
+		timeService->Update();
 		uiService->Update();
 	}
 
 	void ServiceLocator::Render()
 	{
-		graphicService->Render();
+		graphicServie->Render();
 
-		if (GameService::GetGameState() == GameState::GAMEPLAY)
+		switch (GameService::GetGameState())
 		{
-			gameplayService->Render();
-		}
+		//case GameState::SPLASH_SCREEN:
+		//	break;
+		//case GameState::MAIN_MENU:
 
+		case GameState::GAMEPLAY:
+			gameplayService->Render();
+			duckService->Render();
+		default:
+			break;
+		}
 		uiService->Render();
 	}
 
-	void ServiceLocator::ClearAllServices()
+	void ServiceLocator::Reset()
 	{
-		delete(graphicService);
-		delete(timeService);
-		delete(eventService);
-		delete(uiService);
-		delete(gameplayService);
-		delete(soundService);
+		duckService->Reset();
+		playerService->Reset();
+		gameplayService->Reset();
+	}
+
+	GraphicService* ServiceLocator::GetGraphicService()
+	{
+		return graphicServie;
 	}
 
 	EventService* ServiceLocator::GetEventService()
 	{
 		return eventService;
 	}
-
-	GraphicService* ServiceLocator::GetGraphicService()
-	{
-		return graphicService;
-	}
-
-	TimeService* ServiceLocator::GetTimeService()
-	{
-		return timeService;
-	}
-
-	UIService* ServiceLocator::GetUIService()
-	{
-		return uiService;
-	}
-
 	GameplayService* ServiceLocator::GetGameplayService()
 	{
 		return gameplayService;
 	}
-
+	DuckService* ServiceLocator::GetDuckService()
+	{
+		return duckService;
+	}
+	PlayerService* ServiceLocator::GetPlayerService()
+	{
+		return playerService;
+	}
+	TimeService* ServiceLocator::GetTimeService()
+	{
+		return timeService;
+	}
 	SoundService* ServiceLocator::GetSoundService()
 	{
 		return soundService;
 	}
+	UIService* ServiceLocator::GetUIService()
+	{
+		return uiService;
+	}
 }
+

@@ -1,8 +1,8 @@
-#include "Header/Main/GameService.h"
+#include "../../Header/Main/GameService.h"
 
 
-int main()
-{
+int main() {
+
 	using namespace Main;
 
 	GameService* gameService = new GameService();
@@ -14,6 +14,11 @@ int main()
 		gameService->Update();
 		gameService->Render();
 	}
-
-	return 0;
 }
+
+
+
+
+
+
+

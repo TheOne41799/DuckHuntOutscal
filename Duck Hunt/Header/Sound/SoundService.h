@@ -1,33 +1,52 @@
 #pragma once
-#include <SFML/Audio.hpp>
+#include<SFML/Audio.hpp>
 
 
-namespace Sound
+namespace Sound 
 {
-	enum class SoundType
+	enum class SoundType 
 	{
-		BUTTON_CLICK
+		BUTTON_CLICK,
+		BULLET_FIRE,
+		RADIUS_BUllET_FIRE,
+		DUCK_QUACK,
+		DuckDied,
 	};
 
 
-	class SoundService
+	class SoundService 
 	{
 	private:
-		const int backgroundMusicVolume = 30;
+		const int volume = 2;
 
 		sf::Music backgroundMusic;
-
 		sf::Sound soundEffect;
+		sf::Sound duckSoundEffect;
+		sf::Sound bulletSoundEffect;
+
 		sf::SoundBuffer bufferButtonClick;
+
+		sf::SoundBuffer bufferBulletFire;
+		sf::SoundBuffer bufferRadiusBulletFire;
+		sf::SoundBuffer bufferDuckQuackBuffer;
+		sf::SoundBuffer bufferDuckDeadBuffer;
 
 		void LoadBackgroundMusicFromFile();
 		void LoadSoundFromFile();
 
 	public:
-		void Initialize();
-
-		void PlaySound(SoundType type);
+		void PlaySound(SoundType);
 		void PlayBackgroundMusic();
+
+		void Initialize();
 	};
 }
+
+
+
+
+
+
+
+
 
