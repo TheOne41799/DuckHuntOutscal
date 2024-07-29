@@ -1,12 +1,10 @@
 #pragma once
+#include "GameplayController.h"
 
 
-namespace Gameplay
+namespace Gameplay 
 {
-	class GameplayController;
-
-
-	class GameplayService
+	class GameplayService 
 	{
 	private:
 		GameplayController* gameplayController;
@@ -18,5 +16,20 @@ namespace Gameplay
 		void Initialize();
 		void Update();
 		void Render();
+		
+		void IncreaseWave();
+		void ResetWave();
+		
+		int GetNoOfDucksToSpawn();
+		void Reset();
+
+		GameplayModel* GetGameplayModel();
 	};
 }
+
+
+
+
+
+
+

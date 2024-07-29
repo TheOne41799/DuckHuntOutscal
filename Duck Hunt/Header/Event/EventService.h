@@ -1,58 +1,51 @@
 #pragma once
-#include <SFML/Graphics/RenderWindow.hpp>
-#include <SFML/Window/Event.hpp>
+#include <SFML\Graphics.hpp>
 
 
-namespace Event
+namespace Event 
 {
 	enum class ButtonState
 	{
-
 		PRESSED,
 		HELD,
 		RELEASED,
 	};
 
 
-	class EventService
+	class EventService 
 	{
 	private:
 		sf::Event gameEvent;
 		sf::RenderWindow* gameWindow;
 
-		ButtonState leftArrowButtonState;
-		ButtonState rightArrowButtonState;
-
-		ButtonState A_ButtonState;
-		ButtonState D_ButtonState;
-
-		ButtonState leftMouseButtonState;
-		ButtonState rightMouseButtonState;
+		ButtonState LeftMouseButtonState = ButtonState::RELEASED;
 
 		bool IsGameWindowOpen();
-		bool GameWindowWasClosed();
+		bool GameWindowClosed();
 		bool HasQuitGame();
 
-		void UpdateMouseButtonsState(ButtonState& currentButtonState, sf::Mouse::Button mouseButton);
-		void UpdateKeyboardButtonState(ButtonState& currentButtonState, sf::Keyboard::Key keyboardButton);
+		void ProcessEvents();
+		void UpdateMouseButtonState(ButtonState& currentButtonState, sf::Mouse::Button button);
 
 	public:
 		EventService();
 		~EventService();
-
 		void Initialize();
 		void Update();
-		void ProcessEvents();
+
 		bool IsKeyboardEvent();
 		bool PressedEscapeKey();
 
-		bool PressedLeftKey();
-		bool PressedRightKey();
-
-		bool PressedAKey();
-		bool PressedDKey();
-
 		bool PressedLeftMouseButton();
-		bool PressedRightMouseButton();
+
+		bool PressedOneKey();
+		bool PressedTwoKey();
 	};
 }
+
+
+
+
+
+
+

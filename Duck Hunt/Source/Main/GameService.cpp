@@ -1,12 +1,29 @@
 #include "../../Header/Main/GameService.h"
 
 
-namespace Main
+namespace Main 
 {
 	using namespace Global;
-
 	GameState GameService::currentState = GameState::BOOT;
 
+
+	void GameService::Initialize()
+	{
+		serviceLocator->Initialize();
+		gameWindow = serviceLocator->GetGraphicService()->GetGameWindow();
+		ShowSplashScreen();
+	}
+
+	void GameService::ShowSplashScreen()
+	{
+		SetGameState(GameState::SPLASH_SCREEN);
+		Global::ServiceLocator::GetInstance()->GetUIService()->ShowUI();
+	}
+
+	void GameService::Destroy()
+	{
+
+	}
 
 	GameService::GameService()
 	{
@@ -16,7 +33,7 @@ namespace Main
 
 	GameService::~GameService()
 	{
-		Destroy();
+
 	}
 
 	void GameService::Ignite()
@@ -25,27 +42,14 @@ namespace Main
 		Initialize();
 	}
 
-	void GameService::Initialize()
-	{
-		serviceLocator->Initialize();
-		InitializeVariables();
-		ShowMainMenu();
-	}
-
-	void GameService::InitializeVariables()
-	{
-		gameWindow = serviceLocator->GetGraphicService()->GetGameWindow();
-	}
-
 	void GameService::Update()
 	{
-		//serviceLocator->GetEventService()->ProcessEvents();
 		serviceLocator->Update();
 	}
 
 	void GameService::Render()
 	{
-		gameWindow->clear(serviceLocator->GetGraphicService()->GetGameWindowColor());
+		gameWindow->clear(serviceLocator->GetGraphicService()->GetWindowColor());
 		serviceLocator->Render();
 		gameWindow->display();
 	}
@@ -55,22 +59,19 @@ namespace Main
 		return serviceLocator->GetGraphicService()->IsGameWindowOpen();
 	}
 
-	void GameService::Destroy()
+	void GameService::SetGameState(GameState newState)
 	{
+		currentState = newState;
 	}
 
 	GameState GameService::GetGameState()
 	{
 		return currentState;
 	}
-
-	void GameService::SetGameState(GameState state)
-	{
-		currentState = state;
-	}
-
-	void GameService::ShowMainMenu()
-	{
-		SetGameState(GameState::MAIN_MENU);
-	}
 }
+
+
+
+
+
+

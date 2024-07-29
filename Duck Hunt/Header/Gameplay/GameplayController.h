@@ -1,14 +1,14 @@
 #pragma once
+#include "GameplayModel.h"
+#include "GameplayView.h"
 
 
-namespace Gameplay
+namespace Gameplay 
 {
-	class GameplayView;
-
-
-	class GameplayController
+	class GameplayController 
 	{
 	private:
+		GameplayModel* gameplayModel;
 		GameplayView* gameplayView;
 
 	public:
@@ -18,6 +18,21 @@ namespace Gameplay
 		void Initialize();
 		void Update();
 		void Render();
+
+		void IncreaseWave();
+		void ResetWave();
+
+		void Reset();
+
+		GameplayModel* GetGameplayModel();
 	};
 }
+
+
+
+
+
+
+
+
 

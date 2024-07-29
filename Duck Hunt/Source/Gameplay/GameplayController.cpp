@@ -1,26 +1,30 @@
 #include "../../Header/Gameplay/GameplayController.h"
-#include "../../Header/Gameplay/GameplayView.h"
+#include "../../Header/Global/ServiceLocator.h"
 
 
-namespace Gameplay
+namespace Gameplay 
 {
 	GameplayController::GameplayController()
 	{
+		gameplayModel = new GameplayModel();
 		gameplayView = new GameplayView();
 	}
 
 	GameplayController::~GameplayController()
 	{
-		delete(gameplayView);
+		delete gameplayModel;
+		delete gameplayView;
 	}
 
 	void GameplayController::Initialize()
 	{
+		gameplayModel->Initialize();
 		gameplayView->Initialize();
 	}
 
 	void GameplayController::Update()
 	{
+		gameplayModel->Update();
 		gameplayView->Update();
 	}
 
@@ -28,4 +32,43 @@ namespace Gameplay
 	{
 		gameplayView->Render();
 	}
+
+	void GameplayController::IncreaseWave()
+	{
+		gameplayModel->SetGameplayState(GameplayState::WAVE_STARTING);
+		gameplayModel->IncreaseWave();
+
+		Global::ServiceLocator::GetInstance()->GetDuckService()->Reset();
+		Global::ServiceLocator::GetInstance()->GetPlayerService()->IncreaseAmmo();
+		Global::ServiceLocator::GetInstance()->GetPlayerService()->RestAmmoPerRound();
+	}
+
+	void GameplayController::ResetWave()
+	{
+		gameplayModel->SetGameplayState(GameplayState::WAVE_STARTING);
+		gameplayModel->ResetWave();
+		Global::ServiceLocator::GetInstance()->GetDuckService()->Reset();
+	}
+
+	void GameplayController::Reset()
+	{
+		gameplayModel->Reset();
+		ResetWave();
+	}
+
+	GameplayModel* GameplayController::GetGameplayModel()
+	{
+		return gameplayModel;
+	}
 }
+
+
+
+
+
+
+
+
+
+
+

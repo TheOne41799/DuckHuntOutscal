@@ -1,34 +1,39 @@
 #include "../../Header/Graphics/GraphicService.h"
 
 
-namespace Graphics
+namespace Graphic 
 {
-	GraphicService::GraphicService()
+	sf::RenderWindow* GraphicService::CreateGameWindow()
 	{
-		videoMode = nullptr;
-		gameWindow = nullptr;
+		SetVideoMode();
+		return new sf::RenderWindow(*videoMode, "Dunk Hunt", sf::Style::Fullscreen);
 	}
 
+	void GraphicService::SetVideoMode()
+	{
+		videoMode = new sf::VideoMode(gameWindowWidth, gameWindowHeight, sf::VideoMode::getDesktopMode().bitsPerPixel);
+	}
+
+	void GraphicService::Destroy()
+	{
+		delete(gameWindow);
+		delete(videoMode);
+	}
+
+	GraphicService::GraphicService()
+	{
+		gameWindow = nullptr;
+		videoMode = nullptr;
+	}
 	GraphicService::~GraphicService()
 	{
-		OnDestroy();
+		Destroy();
 	}
 
 	void GraphicService::Initialize()
 	{
 		gameWindow = CreateGameWindow();
 		gameWindow->setFramerateLimit(frameRate);
-	}
-
-	sf::RenderWindow* GraphicService::CreateGameWindow()
-	{
-		SetVideoMode();
-		return new sf::RenderWindow(*videoMode, gameWindowTitle, sf::Style::Fullscreen);
-	}
-
-	void GraphicService::SetVideoMode()
-	{
-		videoMode = new sf::VideoMode(gameWindowWidth, gameWindowHeight, sf::VideoMode::getDesktopMode().bitsPerPixel);
 	}
 
 	void GraphicService::Update()
@@ -51,14 +56,14 @@ namespace Graphics
 		return gameWindow;
 	}
 
-	sf::Color GraphicService::GetGameWindowColor()
+	sf::Color GraphicService::GetWindowColor()
 	{
-		return gameWindowColor;
-	}
-
-	void GraphicService::OnDestroy()
-	{
-		delete(videoMode);
-		delete(gameWindow);
+		return windowColor;
 	}
 }
+
+
+
+
+
+

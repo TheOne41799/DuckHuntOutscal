@@ -3,43 +3,37 @@
 #include "../../Header/Global/Config.h"
 
 
-namespace Gameplay
-{
-	using namespace Global;
+namespace Gameplay {
+	void GameplayView::CreateUIElements()
+	{
+		backgroundImage = new UI::UIElement::ImageView();
+	}
 
+	void GameplayView::InitializeImage()
+	{
+		sf::RenderWindow* gameWindow = Global::ServiceLocator::GetInstance()->GetGraphicService()->GetGameWindow();
+		backgroundImage->Initialize(Global::Config::backgroundTexturePath, 
+									gameWindow->getSize().x, gameWindow->getSize().y, sf::Vector2f(0.f, 0.f));
+	}
+
+	void GameplayView::Destroy()
+	{
+		delete(backgroundImage);
+	}
 
 	GameplayView::GameplayView()
 	{
-		gameWindow = nullptr;
+		CreateUIElements();
 	}
 
 	GameplayView::~GameplayView()
 	{
-
+		Destroy();
 	}
 
 	void GameplayView::Initialize()
 	{
-		gameWindow = ServiceLocator::GetInstance()->GetGraphicService()->GetGameWindow();
-
-		InitializeBackgroundSprite();
-	}
-
-	void GameplayView::InitializeBackgroundSprite()
-	{
-		if (backgroundTexture.loadFromFile(Config::duckHuntBackgroundTexturePath))
-		{
-			backgroundSprite.setTexture(backgroundTexture);
-			ScaleBackgroundSprite();
-		}
-	}
-
-	void GameplayView::ScaleBackgroundSprite()
-	{
-		backgroundSprite.setScale(
-			static_cast<float>(gameWindow->getSize().x) / backgroundSprite.getTexture()->getSize().x,
-			static_cast<float>(gameWindow->getSize().y) / backgroundSprite.getTexture()->getSize().y
-		);
+		InitializeImage();
 	}
 
 	void GameplayView::Update()
@@ -49,6 +43,15 @@ namespace Gameplay
 
 	void GameplayView::Render()
 	{
-		gameWindow->draw(backgroundSprite);
+		backgroundImage->Render();
 	}
 }
+
+
+
+
+
+
+
+
+

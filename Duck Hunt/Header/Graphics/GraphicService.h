@@ -2,31 +2,28 @@
 #include <SFML/Graphics.hpp>
 
 
-namespace Graphics
+namespace Graphic 
 {
-	class GraphicService
+	class GraphicService 
 	{
 	private:
-		const sf::String gameWindowTitle = "Space Invaders";
-
 		const int gameWindowWidth = 1920;
 		const int gameWindowHeight = 1080;
 
-		const sf::Color gameWindowColor = sf::Color::Blue;
-
-		const int frameRate = 60;
+		sf::Color windowColor = sf::Color::Black;
 
 		sf::VideoMode* videoMode;
 		sf::RenderWindow* gameWindow;
 
+		sf::RenderWindow* CreateGameWindow();
 		void SetVideoMode();
-		void OnDestroy();
+		void Destroy();
+
+		const int frameRate = 60;
 
 	public:
 		GraphicService();
 		~GraphicService();
-
-		sf::RenderWindow* CreateGameWindow();
 
 		void Initialize();
 		void Update();
@@ -35,7 +32,9 @@ namespace Graphics
 		bool IsGameWindowOpen();
 
 		sf::RenderWindow* GetGameWindow();
-		sf::Color GetGameWindowColor();
-
+		sf::Color GetWindowColor();
 	};
 }
+
+
+
